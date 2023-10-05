@@ -1,7 +1,14 @@
-nav a {
-  margin-right: 1em;
+nav a { margin-right: 1em; }
+
+nav a.active { font-weight: bold; }
+
+.App-header {
+    background-color: #f1f1f1;
+    padding-top: 20px;
+    padding-left: 20px;
+    overflow: hidden;
 }
 
-nav a.active {
-  font-weight: bold;
+.App-content {
+ padding-left: 20px;
 }

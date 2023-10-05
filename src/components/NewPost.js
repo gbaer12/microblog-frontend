@@ -1,16 +1,18 @@
+import React from "react";
 import "./NewPost.css";
-import { useDipatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { sendPostToAPI } from "../actions/posts";
-import PostForm from "./PostForm";
+import PostForm from "../components/PostForm";
 
 /** Show post form, and handle editing of it. */
 
 function NewPost() {
-  const dispatch = useDipatch();
+
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  /** Adds post an saves to backend. */
+  /** Adds post and saves to backend. */
 
   function add({ title, description, body }) {
     dispatch(sendPostToAPI(title, description, body));

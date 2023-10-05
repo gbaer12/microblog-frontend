@@ -27,15 +27,15 @@ function PostDisplay({ doVote, toggleEdit, deletePost, post }) {
           <i className="fas fa-times text-danger" onClick={deletePost} />
         </div>
         <div className="PostDisplay-votes">
-          <b>{votes} votes:</b>
+          <b>{votes} votes</b>
 
           <i
             className="fas fa-thumbs-up text-success"
-            onClick={(e) => doVote("up")}
+            onClick={(evt) => doVote("up")}
           />
           <i
             className="fas fa-thumbs-down text-danger"
-            onClick={(e) => doVote("down")}
+            onClick={(evt) => doVote("down")}
           />
         </div>
       </div>

@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Post.css";
-import { useSelector, useDipatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import {
-  getPostFromApi,
+  getPostFromAPI,
   updatePostInAPI,
   sendVoteToAPI,
   sendCommentToAPI,
   removeCommentFromAPI,
-  removePostFromAPI,
+  removePostFromAPI
 } from "../actions/posts";
-import POstForm from "./PostForm";
-import CommentList from "./CommentList";
-import PostDisplay from "./PostDisplay";
-import CommentForm from "./CommentForm";
+import PostForm from "../components/PostForm";
+import CommentList from "../components/CommentList";
+import PostDisplay from "../components/PostDisplay";
+import CommentForm from "../components/CommentForm";
 
 /** Post:
  *
@@ -22,64 +22,67 @@ import CommentForm from "./CommentForm";
  * - handles edit form submission
  * - handles add-comment form submission
  * - handles comment-deletion
- * - handles post-deleteion
+ * - handles post-deletion
  */
 
 function Post(props) {
+
   const [isEditing, setIsEditing] = useState(false);
   const postId = Number(useParams().postId);
   const history = useHistory();
-  const post = useSelector((st) => st.posts[postId]);
+  const post = useSelector(st => st.posts[postId]);
   const dispatch = useDispatch();
 
-  /** If we don't have the post, request if rom the API */
+  /** If we don't have the post, request it from API. */
 
-  useEffect(
-    function loadPostWhenPostOrIdChanges() {
-      async function getPost() {
-        dispatch(getPostFromApi(postId));
-      }
-      if (!post) {
-        getPost();
-      }
-    },
-    [dispatch, postId, post]
-  );
+  useEffect(function loadPostWhenPostOrIdChanges() {
+    async function getPost() {
+      dispatch(getPostFromAPI(postId));
+    }
+    if (!post) {
+      getPost();
+    }
+  }, [dispatch, postId, post]);
 
   /** Toggle editing on/off */
 
   function toggleEdit() {
-    setIsEditing((edit) => !edit);
+    setIsEditing(edit => !edit);
   }
 
-  /** Handle post editing: add to backend */
+  /** Handle post editing: adds to backend. */
 
   function edit({ title, description, body }) {
-    dispatch(updatePostInAPI(postId, title, description, body));
+    dispatch(updatePostInAPI(
+      postId,
+      title,
+      description,
+      body
+    ));
 
     toggleEdit();
   }
 
-  /** Handle post deletion: deletes from backend */
+  /** Handle post deletion: deletes from backend. */
 
   function deletePost() {
     dispatch(removePostFromAPI(postId));
     history.push("/");
   }
 
-  /** Handle voting in backend */
+  /** Handle voting in backend. */
 
   function vote(direction) {
     dispatch(sendVoteToAPI(postId, direction));
   }
 
-  /** Handle adding a comment: adds to backend */
+  /** Handle adding a comment: adds to backend. */
 
   function addComment(text) {
     dispatch(sendCommentToAPI(postId, text));
   }
 
-  /** Handle deleting a comment in backend */
+  /** Handle deleting a comment in backend. */
 
   function deleteComment(commentId) {
     dispatch(removeCommentFromAPI(postId, commentId));
@@ -88,7 +91,7 @@ function Post(props) {
   /** Render:
    *
    * - if not post yet, a loading message
-   * - if editing, the edit fomr & comments
+   * - if editing, the edit form & comments
    * - if not, the display & comments
    */
 
@@ -96,22 +99,21 @@ function Post(props) {
 
   return (
     <div className="Post">
-      {isEditing ? (
-        <POstForm post={post} save={edit} cancel={toggleEdit} />
-      ) : (
-        <PostDisplay
-          post={post}
-          toggleEdit={toggleEdit}
-          deletePost={deletePost}
-          doVote={vote}
-        />
-      )}
+
+      {isEditing
+        ? <PostForm post={post} save={edit} cancel={toggleEdit} />
+        : <PostDisplay post={post}
+                        toggleEdit={toggleEdit}
+                        deletePost={deletePost}
+                        doVote={vote} />}
 
       <section className="Post-comments mb-4">
         <h4>Comments</h4>
-        <CommentList comments={post.comments} deleteComment={deleteComment} />
+        <CommentList comments={post.comments}
+                      deleteComment={deleteComment} />
         <CommentForm submitCommentForm={addComment} />
       </section>
+
     </div>
   );
 }

@@ -6,16 +6,16 @@ import {
   VOTE,
   ADD_COMMENT,
   REMOVE_COMMENT,
-  FETCH_POST,
+  FETCH_POST
 } from "./types";
 
-const API_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:5000/api/posts";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api/posts";
 
-export function getPostFromApi(id) {
+
+export function getPostFromAPI(id) {
   return async function (dispatch) {
-    const res = await axios.get(`${API_URL}/${id}`);
-    return dispatch(getPost(res.data));
+    const response = await axios.get(`${API_URL}/${id}`);
+    return dispatch(getPost(response.data));
   };
 }
 
@@ -28,19 +28,19 @@ function getPost(post) {
 
 export function sendPostToAPI(title, description, body) {
   return async function (dispatch) {
-    const res = await axios.post(`${API_URL}`, {
+    const response = await axios.post(`${API_URL}`, {
       title,
       description,
-      body,
+      body
     });
-    return dispatch(addPost(res.data));
+    return dispatch(addPost(response.data));
   };
 }
 
 function addPost(post) {
   return {
     type: ADD_POST,
-    post,
+    post
   };
 }
 
@@ -54,18 +54,18 @@ export function removePostFromAPI(id) {
 function removePost(postId) {
   return {
     type: REMOVE_POST,
-    postId,
+    postId
   };
 }
 
 export function updatePostInAPI(id, title, description, body) {
   return async function (dispatch) {
-    const res = await axios.put(`${API_URL}/${id}`, {
+    const response = await axios.put(`${API_URL}/${id}`, {
       title,
       description,
-      body,
+      body
     });
-    return dispatch(updatePost(res.data));
+    return dispatch(updatePost(response.data));
   };
 }
 
@@ -78,8 +78,8 @@ function updatePost(post) {
 
 export function sendVoteToAPI(id, direction) {
   return async function (dispatch) {
-    const res = await axios.post(`${API_URL}/${id}/vote/${direction}`);
-    return dispatch(vote(id, res.data.votes));
+    const response = await axios.post(`${API_URL}/${id}/vote/${direction}`);
+    return dispatch(vote(id, response.data.votes));
   };
 }
 
@@ -108,15 +108,11 @@ function removeComment(postId, commentId) {
 
 export function sendCommentToAPI(postId, text) {
   return async function (dispatch) {
-    const res = await axios.post(`${API_URL}/${postId}/comments/`, { text });
-    return dispatch(addComment(postId, res.data));
+    const result = await axios.post(`${API_URL}/${postId}/comments/`, { text });
+    return dispatch(addComment(postId, result.data));
   };
 }
 
 function addComment(postId, comment) {
-  return {
-    type: ADD_COMMENT,
-    postId,
-    comment,
-  };
+  return { type: ADD_COMMENT, postId, comment };
 }

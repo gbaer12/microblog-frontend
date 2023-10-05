@@ -12,24 +12,27 @@ function TitleList() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchTitle() {
-      await dispatch(fetchTitlesFromAPI());
-      setIsLoading(false);
-    }
+  useEffect(
+    function () {
+      async function fetchTitle() {
+        await dispatch(fetchTitlesFromAPI());
+        setIsLoading(false);
+      }
 
-    if (isLoading) {
-      fetchTitle();
-    }
-  }, [dispatch, isLoading]);
+      if (isLoading) {
+        fetchTitle();
+      }
+    },
+    [dispatch, isLoading]
+  );
 
   function vote(direction, id) {
     dispatch(sendVoteToAPI(id, direction));
   }
 
-  if (isLoading) return <b>Loading...</b>;
+  if (isLoading) return <b>Loading</b>;
 
-  if (isLaoding && titles.length === 0) {
+  if (!isLoading && titles.length === 0) {
     return <b>Please add a post!</b>;
   }
 
@@ -47,15 +50,17 @@ function TitleList() {
               </div>
             </div>
             <div className="card-footer">
-              <small>{title.votes} votes</small>
-              <i
-                className="fas fa-thumbs-up text-success ml-2"
-                onClick={(e) => vote("up", title.id)}
-              />
-              <i
-                className="fas fa-thumbs-down text-danger ml-2"
-                onClick={(e) => vote("down", title.id)}
-              />
+              <small>{title.votes} votes </small>
+              <div className="thumbs">
+                <i
+                  className="fas fa-thumbs-up text-success ml-2"
+                  onClick={(evt) => vote("up", title.id)}
+                />
+                <i
+                  className="fas fa-thumbs-down text-danger ml-2"
+                  onClick={(evt) => vote("down", title.id)}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -63,3 +68,5 @@ function TitleList() {
     </div>
   );
 }
+
+export default TitleList;

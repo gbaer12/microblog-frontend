@@ -1,10 +1,15 @@
-/** Comment: shows comment
+import React from 'react';
+
+/** CommentList: shows list of comments passed down as props.
  *
- * Comments can be deleted by clicking next to them.  This is handled by parent.
+ * Comments can be deleted by clicking next to them; this is handled by
+ * the parent.
+ *
  */
 
-function Comment({ deleteComment, text, id }) {
-  function handleDelete(e) {
+function Comment({deleteComment, text, id}) {
+
+  function handleDelete(evt) {
     deleteComment(id);
   }
 
@@ -12,7 +17,10 @@ function Comment({ deleteComment, text, id }) {
     <div>
       <p>
         {deleteComment && (
-          <i className="fa fa-times text-danger mr-2" onClick={handleDelete} />
+          <i
+            className="fa fa-times text-danger mr-2"
+            onClick={handleDelete}
+          />
         )}
 
         {text}
